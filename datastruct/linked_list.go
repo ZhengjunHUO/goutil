@@ -21,14 +21,7 @@ type LinkedListNode[V any] struct {
 func NewLinkedList[V any](slice []V) *LinkedList[V] {
 	l := &LinkedList[V]{}
 
-	n := len(slice)
-	/*
-	if n == 0 {
-		return l
-	}
-	*/
-
-	for i := 0; i < n; i++ {
+	for i := 0; i < len(slice); i++ {
 		l.Push(slice[i])
 	}
 
