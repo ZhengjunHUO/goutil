@@ -31,7 +31,7 @@ func (mq *MonotonicQueue[V]) Push(elem V) {
 }
 
 // Pop tries to remove the given element if this element is the max of the queue
-// if not, this action is ignored  
+// if not, this action is ignored
 func (mq *MonotonicQueue[V]) Pop(elem V) {
 	mq.lock.Lock()
 	defer mq.lock.Unlock()
