@@ -2,12 +2,14 @@ package datastruct
 
 import (
 	"fmt"
+	"sync"
 )
 
 // LinkedList contains two pointers indicating 
 // the linked list's head and tail position
 type LinkedList[V any] struct {
 	Head, Tail *LinkedListNode[V]
+	Lock  sync.RWMutex
 }
 
 // LinkedListNode is the basic element in LinkedList
@@ -30,6 +32,9 @@ func NewLinkedList[V any](slice []V) *LinkedList[V] {
 
 // Push appends a new element to the linked list's tail
 func (l *LinkedList[V]) Push(v V) {
+	l.Lock.Lock()
+	defer l.Lock.Unlock()
+
 	if l.Tail == nil {
 		l.Head = &LinkedListNode[V]{v, nil}
 		l.Tail = l.Head
@@ -43,6 +48,9 @@ func (l *LinkedList[V]) Push(v V) {
 // ToSlice converts the linked list back to a slice 
 // of the same element value's type
 func (l *LinkedList[V]) ToSlice() []V {
+	l.Lock.RLock()
+	defer l.Lock.RUnlock()
+
 	var slice []V
 
 	for n := l.Head; n != nil; n = n.Next {
@@ -54,6 +62,9 @@ func (l *LinkedList[V]) ToSlice() []V {
 
 // PrintAll prints all elements' value in the linked list, comma separated.
 func (l *LinkedList[V]) PrintAll() {
+	l.Lock.RLock()
+	defer l.Lock.RUnlock()
+
 	if l.Head != nil {
 	        curr := l.Head
 	        for {
