@@ -6,8 +6,8 @@ import (
 
 // Queue contains a slice of any type
 type Queue[V any] struct {
-	Elems []V
-	Lock  sync.RWMutex
+	elems []V
+	lock  sync.RWMutex
 }
 
 // NewQueue creates a queue from a slice of any type
@@ -23,10 +23,10 @@ func NewQueue[V any](slice []V) *Queue[V] {
 
 // Push appends a new element of any type to the end
 func (q *Queue[V]) Push(elem V) {
-	q.Lock.Lock()
-	defer q.Lock.Unlock()
+	q.lock.Lock()
+	defer q.lock.Unlock()
 
-	q.Elems = append(q.Elems, elem)
+	q.elems = append(q.elems, elem)
 }
 
 // Pop returns the queue's head and remove it from the queue
@@ -37,15 +37,15 @@ func (q *Queue[V]) Pop() V {
 		return zeroVal
 	}
 
-	q.Lock.Lock()
-	defer q.Lock.Unlock()
+	q.lock.Lock()
+	defer q.lock.Unlock()
 
 	defer func(){
-		q.Elems[0] = zeroVal
-		q.Elems = q.Elems[1:]
+		q.elems[0] = zeroVal
+		q.elems = q.elems[1:]
 	}()
 
-	return q.Elems[0]
+	return q.elems[0]
 }
 
 // Peek returns the queue's head
@@ -56,24 +56,24 @@ func (q *Queue[V]) Peek() V {
 		return zeroVal
 	}
 
-	q.Lock.RLock()
-	defer q.Lock.RUnlock()
+	q.lock.RLock()
+	defer q.lock.RUnlock()
 
-	return q.Elems[0]
+	return q.elems[0]
 }
 
 // IsEmpty checks if the queue is empty
 func (q *Queue[V]) IsEmpty() bool {
-	q.Lock.RLock()
-	defer q.Lock.RUnlock()
+	q.lock.RLock()
+	defer q.lock.RUnlock()
 
-	return len(q.Elems) == 0
+	return len(q.elems) == 0
 }
 
 // Size returns the length of queue
 func (q *Queue[V]) Size() int {
-	q.Lock.RLock()
-	defer q.Lock.RUnlock()
+	q.lock.RLock()
+	defer q.lock.RUnlock()
 
-	return len(q.Elems)
+	return len(q.elems)
 }
