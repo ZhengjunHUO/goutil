@@ -6,7 +6,7 @@ import (
 
 // Queue contains a slice of any type
 type Queue[V any] struct {
-	elems []V
+	Elems []V
 	lock  sync.RWMutex
 }
 
@@ -26,7 +26,7 @@ func (q *Queue[V]) Push(elem V) {
 	q.lock.Lock()
 	defer q.lock.Unlock()
 
-	q.elems = append(q.elems, elem)
+	q.Elems = append(q.Elems, elem)
 }
 
 // Pop returns the queue's head and remove it from the queue
@@ -41,11 +41,11 @@ func (q *Queue[V]) Pop() V {
 	defer q.lock.Unlock()
 
 	defer func(){
-		q.elems[0] = zeroVal
-		q.elems = q.elems[1:]
+		q.Elems[0] = zeroVal
+		q.Elems = q.Elems[1:]
 	}()
 
-	return q.elems[0]
+	return q.Elems[0]
 }
 
 // Peek returns the queue's head
@@ -59,7 +59,7 @@ func (q *Queue[V]) Peek() V {
 	q.lock.RLock()
 	defer q.lock.RUnlock()
 
-	return q.elems[0]
+	return q.Elems[0]
 }
 
 // IsEmpty checks if the queue is empty
@@ -67,7 +67,7 @@ func (q *Queue[V]) IsEmpty() bool {
 	q.lock.RLock()
 	defer q.lock.RUnlock()
 
-	return len(q.elems) == 0
+	return len(q.Elems) == 0
 }
 
 // Size returns the length of queue
@@ -75,5 +75,5 @@ func (q *Queue[V]) Size() int {
 	q.lock.RLock()
 	defer q.lock.RUnlock()
 
-	return len(q.elems)
+	return len(q.Elems)
 }

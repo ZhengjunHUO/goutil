@@ -5,7 +5,7 @@ import (
 )
 
 type Stack[V any] struct {
-	elems	[]V
+	Elems	[]V
 	lock	sync.RWMutex
 }
 
@@ -23,7 +23,7 @@ func (s *Stack[V]) Push(elem V) {
 	s.lock.Lock()
 	defer s.lock.Unlock()
 
-	s.elems = append(s.elems, elem)
+	s.Elems = append(s.Elems, elem)
 }
 
 func (s *Stack[V]) Pop() V {
@@ -36,14 +36,14 @@ func (s *Stack[V]) Pop() V {
 	s.lock.Lock()
 	defer s.lock.Unlock()
 
-	n := len(s.elems)
+	n := len(s.Elems)
 
 	defer func(){
-		s.elems[n-1] = zeroVal
-		s.elems = s.elems[:n-1]
+		s.Elems[n-1] = zeroVal
+		s.Elems = s.Elems[:n-1]
 	}()
 
-	return s.elems[n-1]
+	return s.Elems[n-1]
 }
 
 func (s *Stack[V]) Peek() V {
@@ -56,19 +56,19 @@ func (s *Stack[V]) Peek() V {
 	s.lock.RLock()
 	defer s.lock.RUnlock()
 
-	return s.elems[len(s.elems)-1]
+	return s.Elems[len(s.Elems)-1]
 }
 
 func (s *Stack[V]) IsEmpty() bool {
 	s.lock.RLock()
 	defer s.lock.RUnlock()
 
-	return len(s.elems) == 0
+	return len(s.Elems) == 0
 }
 
 func (s *Stack[V]) Size() int {
 	s.lock.RLock()
 	defer s.lock.RUnlock()
 
-	return len(s.elems)
+	return len(s.Elems)
 }
