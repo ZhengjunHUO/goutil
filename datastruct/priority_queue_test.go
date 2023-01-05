@@ -58,15 +58,7 @@ func TestMinPriorityQueue(t *testing.T) {
 		t.Errorf("PopWithPriority returns (%v, %v), expect (%v, %v)\n", v, p, val, prio)
 	}
 
-	if v := pq.Remove(400); v != nil {
-		t.Errorf("Remove inexist value returns %v, expect nil", v)
-	}
-
-	if v := pq.Remove(300); v == nil {
-		t.Errorf("Remove exist value returns %v, expect not nil", v)
-	}
-
-	if pq.Peek() != 500 {
+	if pq.Peek() != 300 {
 		t.Errorf("Peek returns %v, expect 500\n", pq.Peek())
 	}
 }

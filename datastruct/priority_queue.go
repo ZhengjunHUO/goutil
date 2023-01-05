@@ -9,43 +9,43 @@ import (
 
 // Elem contains a value, its priority
 // and an index for heap.Interface methods
-type Elem[T comparable, O constraints.Ordered] struct {
+type Elem[T any, O constraints.Ordered] struct {
 	value		T
 	priority	O
 	index		int
 }
 
 // Heap implements heap.Interface's methods except Less(i, j int) bool
-type Heap[T comparable, O constraints.Ordered] []*Elem[T, O]
+type Heap[T any, O constraints.Ordered] []*Elem[T, O]
 
 // MaxHeap embeds Heap and provides a Less method, thus implements heap.Interface
 // it also provides a GetElems method, to satisfy the GenericHeap interface
-type MaxHeap[T comparable, O constraints.Ordered] struct {
+type MaxHeap[T any, O constraints.Ordered] struct {
 	*Heap[T, O]
 }
 
 // MinHeap embeds Heap and provides a Less method, thus implements heap.Interface
 // it also provides a GetElems method, to satisfy the GenericHeap interface
-type MinHeap[T comparable, O constraints.Ordered] struct {
+type MinHeap[T any, O constraints.Ordered] struct {
 	*Heap[T, O]
 }
 
 // GenericHeap contains a heap.Interface and a GetElems method
 // MaxHeap and MinHeap implement this interface
-type GenericHeap[T comparable, O constraints.Ordered] interface {
+type GenericHeap[T any, O constraints.Ordered] interface {
 	heap.Interface
 	GetElems() []*Elem[T, O]
 }
 
 // PriorityQueue adds the thread safe to the GenericHeap
-type PriorityQueue[T comparable, O constraints.Ordered] struct {
+type PriorityQueue[T any, O constraints.Ordered] struct {
 	data		GenericHeap[T, O]
 	lock		sync.RWMutex
 }
 
 // NewPQ builds a priority queue with a slice of value and priority
 // popLowest decides its a min heap or max heap
-func NewPQ[T comparable, O constraints.Ordered](values []T, prios []O, popLowest bool) *PriorityQueue[T, O] {
+func NewPQ[T any, O constraints.Ordered](values []T, prios []O, popLowest bool) *PriorityQueue[T, O] {
 	nv := len(values)
 	np := len(prios)
 
@@ -168,20 +168,6 @@ func (pq *PriorityQueue[T, O]) PopWithPriority() (T, O){
 	elem := heap.Pop(pq.data).(*Elem[T, O])
 
         return elem.value, elem.priority
-}
-
-// Remove delete a matching value in the priority queue and recalculate the queue's order
-func (pq *PriorityQueue[T, O]) Remove(value T) any {
-	pq.lock.Lock()
-	defer pq.lock.Unlock()
-
-	for _, elem := range pq.data.GetElems() {
-		if elem.value == value {
-			return heap.Remove(pq.data, elem.index)
-		}
-	}
-
-	return nil
 }
 
 // Peek checks the min/max value of the priority queue
