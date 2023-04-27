@@ -61,6 +61,17 @@ func NewLinkedHashmap() *LinkedHashmap {
 	return &LinkedHashmap{make(map[interface{}]*DoublyLinkedNode), NewDoublyLinkedList()}
 }
 
+// NewLinkedHashmapFromKV initializes a linked hashmap from a list of key-value tuples
+func NewLinkedHashmapFromKV(kvList [][2]interface{}) *LinkedHashmap {
+	rslt := NewLinkedHashmap()
+
+	for _, v := range kvList {
+		rslt.Put(v[0], v[1])
+	}
+
+	return rslt
+}
+
 // Put adds a node to the list and registers to the dictionary if not exist yet.
 // Update the value of exist one.
 func (lm *LinkedHashmap) Put(k, v interface{}) {

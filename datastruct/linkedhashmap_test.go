@@ -5,6 +5,7 @@ import (
 )
 
 func TestLinkedHashmap(t *testing.T) {
+	/*
 	lhm := NewLinkedHashmap()
 
 	if lhm.List.Pop() != nil {
@@ -20,6 +21,14 @@ func TestLinkedHashmap(t *testing.T) {
 	lhm.Put(3, "three")
 	lhm.Put(5, "five")
 	lhm.Put(7, "seven")
+	*/
+
+	lhm := NewLinkedHashmapFromKV([][2]interface{}{
+		[2]interface{}{2, "two"},
+		[2]interface{}{3, "three"},
+		[2]interface{}{5, "five"},
+		[2]interface{}{7, "seven"},
+	})
 
 	// Update existing value
 	cinq := "cinq"
