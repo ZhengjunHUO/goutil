@@ -135,7 +135,23 @@ func (lm *LinkedHashmap) Contains(k interface{}) bool {
 	return true
 }
 
-// Size return the linked hashmap's size
+// Size returns the linked hashmap's size
 func (lm *LinkedHashmap) Size() int {
 	return lm.List.Len
+}
+
+// IntoIter returns an iterator to read through the ordered linked map
+func (lm *LinkedHashmap) IntoIter() <-chan *DoublyLinkedNode {
+	next := make(chan *DoublyLinkedNode)
+
+	go func() {
+		defer close(next)
+		current := lm.List.Head.Next
+		for current.Key != nil {
+			next <- current
+			current = current.Next
+		}
+	}()
+
+	return next
 }

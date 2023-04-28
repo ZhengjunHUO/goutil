@@ -1,6 +1,7 @@
 package datastruct
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -29,6 +30,17 @@ func TestLinkedHashmap(t *testing.T) {
 		[2]interface{}{5, "five"},
 		[2]interface{}{7, "seven"},
 	})
+
+	// Read through the ordered hashmap
+	list := ""
+	expectedList := "two three five seven "
+	for elem := range lhm.IntoIter() {
+		list += fmt.Sprintf("%v ", elem.Val)
+	}
+
+	if list != expectedList {
+		t.Errorf("Expect %v, but got %v", expectedList, list)
+	}
 
 	// Update existing value
 	cinq := "cinq"
