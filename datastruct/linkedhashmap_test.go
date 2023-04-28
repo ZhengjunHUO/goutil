@@ -6,22 +6,22 @@ import (
 )
 
 func TestLinkedHashmap(t *testing.T) {
+	emptyLhm := NewLinkedHashmap()
+
+	if emptyLhm.List.Pop() != nil {
+		t.Errorf("Expect nil when poping from empty list.")
+	}
+
+	if emptyLhm.PopEldest() != nil {
+		t.Errorf("Expect nil when poping from empty list.")
+	}
+
 	/*
-	lhm := NewLinkedHashmap()
-
-	if lhm.List.Pop() != nil {
-		t.Errorf("Expect nil when poping from empty list.")
-	}
-
-	if lhm.PopEldest() != nil {
-		t.Errorf("Expect nil when poping from empty list.")
-	}
-
 	// Add
-	lhm.Put(2, "two")
-	lhm.Put(3, "three")
-	lhm.Put(5, "five")
-	lhm.Put(7, "seven")
+	emptyLhm.Put(2, "two")
+	emptyLhm.Put(3, "three")
+	emptyLhm.Put(5, "five")
+	emptyLhm.Put(7, "seven")
 	*/
 
 	lhm := NewLinkedHashmapFromKV([][2]interface{}{
